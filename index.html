@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Bugshaker by detroit-labs</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Bugshaker</h1>
+        <h2>Shake to submit a bug report (w/ screenshot) via email.</h2>
+        <a href="https://github.com/detroit-labs/BugShaker" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="bugshaker" class="anchor" href="#bugshaker" aria-hidden="true"><span class="octicon octicon-link"></span></a>BugShaker</h1>
+
+<p><a href="https://travis-ci.org/detroit-labs/BugShaker"><img src="http://img.shields.io/travis/detroit-labs/BugShaker.svg?style=flat" alt="CI Status"></a>
+<a href="http://cocoapods.org/pods/BugShaker"><img src="https://img.shields.io/cocoapods/v/BugShaker.svg?style=flat" alt="Version"></a>
+<a href="http://cocoapods.org/pods/BugShaker"><img src="https://img.shields.io/cocoapods/l/BugShaker.svg?style=flat" alt="License"></a>
+<a href="http://cocoapods.org/pods/BugShaker"><img src="https://img.shields.io/cocoapods/p/BugShaker.svg?style=flat" alt="Platform"></a></p>
+
+<p>BugShaker allows your users to simply submit bug reports by shaking the device.
+When a shake is detected, the current screen state is captured and the user is
+prompted to submit a bug report via a mail composer with the screenshot attached.</p>
+
+<h2>
+<a id="screenshots" class="anchor" href="#screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Screenshots</h2>
+
+<p><img src="https://github.com/detroit-labs/BugShaker/blob/master/screenshot-1.png" alt="Report Prompt">
+<img src="https://github.com/detroit-labs/BugShaker/blob/master/screenshot-2.png" alt="Report Compose View"></p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>To run the example project, clone the repo, and run <code>pod install</code> from the Example directory first.</p>
+
+<p>All you have to do to enable bug reporting is import <code>BugShaker</code> in your <code>AppDelegate</code>
+and call the <code>configure()</code> method in <code>application:didFinishLaunchingWithOptions</code>,
+passing in the array of email recipients and an optional custom subject line:</p>
+
+<div class="highlight highlight-source-swift"><pre>  <span class="pl-k">import</span> <span class="pl-c1">BugShaker</span>
+
+  <span class="pl-k">@UIApplicationMain</span>
+  <span class="pl-k">class</span> AppDelegate: UIResponder, UIApplicationDelegate {
+
+    <span class="pl-k">var</span> window: UIWindow?
+
+    <span class="pl-k">func</span> <span class="pl-en">application</span>(application: UIApplication, didFinishLaunchingWithOptions <span class="pl-smi">launchOptions</span>: [NSObject: <span class="pl-c1">AnyObject</span>]?) <span class="pl-k">-&gt;</span> <span class="pl-c1">Bool</span> {
+      <span class="pl-c">/**</span>
+<span class="pl-c">      *  Configure ShakeReport with an array of email recipients (required)</span>
+<span class="pl-c">      *  and an optional custom subject line to use for all bug reports.</span>
+<span class="pl-c">      */</span>
+      BugShaker<span class="pl-k">.</span>configure(to: [<span class="pl-s"><span class="pl-pds">"</span>example@email.com<span class="pl-pds">"</span></span>], subject: <span class="pl-s"><span class="pl-pds">"</span>Bug Report<span class="pl-pds">"</span></span>)
+
+      <span class="pl-k">return</span> <span class="pl-c1">true</span>
+    }
+
+  }</pre></div>
+
+<p><strong>NOTE:</strong> There is a known issue with using a mail compose view controller in a simulator
+which causes some simulators simulator to crash. You will need to run the example on a
+device to test out the full report compose view functionality.</p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>BugShaker is available through <a href="http://cocoapods.org">CocoaPods</a>. To install
+it, simply add the following line to your Podfile:</p>
+
+<div class="highlight highlight-source-ruby"><pre>pod <span class="pl-s"><span class="pl-pds">"</span>BugShaker<span class="pl-pds">"</span></span></pre></div>
+
+<h2>
+<a id="author" class="anchor" href="#author" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author</h2>
+
+<p>Dan Trenz (<a href="http://www.twitter.com/dtrenz">@dtrenz</a>) c/o <a href="http://www.detroitlabs.com">Detroit Labs</a></p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>BugShaker is available under the MIT license. See the LICENSE file for more info.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/detroit-labs/BugShaker/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/detroit-labs/BugShaker/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/detroit-labs/BugShaker"></a> is maintained by <a href="https://github.com/detroit-labs">detroit-labs</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
