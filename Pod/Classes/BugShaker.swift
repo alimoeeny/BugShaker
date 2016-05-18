@@ -10,6 +10,7 @@ import MessageUI
 
 public protocol BugShakerDelegate {
     func shouldPresentReportPrompt() -> Bool
+    optional func shouldAddOtherAttachments(mailComposer: MFMailComposeViewController)
 }
 
 public class BugShaker {
@@ -143,6 +144,10 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
 
             if let screenshot = screenshot, let screenshotJPEG = UIImageJPEGRepresentation(screenshot, CGFloat(1.0)) {
                 mailComposer.addAttachmentData(screenshotJPEG, mimeType: "image/jpeg", fileName: "screenshot.jpeg")
+            }
+
+            if let delegate = delegate {
+                delegate.shouldAddOtherAttachments(mailComposer)
             }
 
             presentViewController(mailComposer, animated: true, completion: nil)
