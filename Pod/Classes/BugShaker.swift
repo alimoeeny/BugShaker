@@ -10,7 +10,7 @@ import MessageUI
 
 @objc public protocol BugShakerDelegate {
     func shouldPresentReportPrompt() -> Bool
-        optional func shouldAddOtherAttachments(mailComposer: MFMailComposeViewController)
+        @objc optional func shouldAddOtherAttachments(mailComposer: MFMailComposeViewController)
 }
 
 public class BugShaker {
@@ -46,12 +46,10 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
 
     // MARK: - UIResponder
 
-    override public func canBecomeFirstResponder() -> Bool {
-        return true
-    }
-
-    override public func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
-        if motion == .MotionShake {
+    open override var canBecomeFirstResponder: Bool { return true}
+    
+    override open func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
             if let delegate = BugShaker.delegate {
                 if !delegate.shouldPresentReportPrompt() {
                     return
@@ -60,38 +58,38 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
 
             let cachedScreenshot = captureScreenshot()
 
-                presentReportPrompt({ (action) -> Void in
-                        self.presentReportComposeView(cachedScreenshot)
+                presentReportPrompt(reportActionHandler: { (action) -> Void in
+                        self.presentReportComposeView(screenshot: cachedScreenshot)
                         })
         }
     }
 
     // MARK: - Alert
 
-    func presentReportPrompt(reportActionHandler: (UIAlertAction) -> Void) {
+    func presentReportPrompt(reportActionHandler: @escaping (UIAlertAction) -> Void) {
 
-        let reportAction = UIAlertAction(title: "Report A Bug", style: .Default, handler: reportActionHandler)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
+        let reportAction = UIAlertAction(title: "Report A Bug", style: .default, handler: reportActionHandler)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
 
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+        if UIDevice.current.userInterfaceIdiom == .phone {
             let actionSheet = UIAlertController(
                     title: "Shake detected!",
                     message: "Would you like to report a bug?",
-                    preferredStyle: .ActionSheet
+                    preferredStyle: .actionSheet
                     )
                 actionSheet.addAction(reportAction)
                 actionSheet.addAction(cancelAction)
-                self.presentViewController(actionSheet, animated: true, completion: nil)
+                self.present(actionSheet, animated: true, completion: nil)
         }
         else {
             let actionSheet = UIAlertController(
                     title: "Shake detected!",
                     message: "Would you like to report a bug?",
-                    preferredStyle: .Alert
+                    preferredStyle: .alert
                     )
                 actionSheet.addAction(reportAction)
                 actionSheet.addAction(cancelAction)
-                self.presentViewController(actionSheet, animated: true, completion: nil)
+                self.present(actionSheet, animated: true, completion: nil)
         }
     }
 
@@ -105,13 +103,13 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
     func captureScreenshot() -> UIImage? {
         var screenshot: UIImage? = nil
 
-            if let layer = UIApplication.sharedApplication().keyWindow?.layer {
-                let scale = UIScreen.mainScreen().scale
+            if let layer = UIApplication.shared.keyWindow?.layer {
+                let scale = UIScreen.main.scale
 
                     UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
 
                 if let context = UIGraphicsGetCurrentContext() {
-                    layer.renderInContext(context)
+                    layer.render(in: context)
                 }
 
                 screenshot = UIGraphicsGetImageFromCurrentImageContext()
@@ -154,7 +152,7 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
 
 
 
-            presentViewController(mailComposer, animated: true, completion: nil)
+            present(mailComposer, animated: true, completion: nil)
         }
     }
 
@@ -168,11 +166,11 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
         }
 
         switch result {
-            case MFMailComposeResultFailed:
+            case .failed:
                 print("BugShaker – Bug report send failed.")
                     break;
 
-            case MFMailComposeResultSent:
+            case .sent:
                 print("BugShaker – Bug report sent!")
                     break;
 
@@ -181,7 +179,7 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
                 break;
         }
 
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
 }
